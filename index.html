@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birthday Surprise 💖</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  height: 100vh;
+  overflow: hidden;
+  background: linear-gradient(160deg, #1a0033, #2b004f, #3d0066);
+  color: white;
+}
+
+/* Glow */
+.glow {
+  text-shadow: 0 0 10px #ff4fd8, 0 0 20px #ff4fd8;
+}
+
+/* Center container */
+.scene {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.active {
+  display: flex;
+}
+
+/* Button */
+.btn {
+  margin-top: 20px;
+  padding: 12px 24px;
+  border-radius: 30px;
+  border: none;
+  color: white;
+  background: linear-gradient(45deg, #ff4fd8, #ff80bf);
+  box-shadow: 0 0 20px rgba(255, 77, 216, 0.7);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* Hearts */
+.heart {
+  position: absolute;
+  color: #ff4fd8;
+  animation: float 6s linear infinite;
+}
+
+@keyframes float {
+  from { transform: translateY(100vh); opacity: 0; }
+  to { transform: translateY(-10vh); opacity: 1; }
+}
+
+/* Loader */
+.loader {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 3px solid rgba(255,255,255,0.2);
+  border-top: 3px solid #ff4fd8;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Cards */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  max-width: 500px;
+  width: 90%;
+}
+
+.card {
+  background: rgba(255,255,255,0.1);
+  padding: 12px;
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  animation: slideUp 1s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.card img {
+  width: 100%;
+  height: auto;
+  max-height: 150px;
+  object-fit: contain;
+  border-radius: 10px;
+  margin-bottom: 8px;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Confetti */
+.confetti {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  background: gold;
+  animation: fall 4s linear infinite;
+}
+
+@keyframes fall {
+  from { transform: translateY(-10vh); }
+  to { transform: translateY(100vh); }
+}
+
+/* Gift */
+.gift {
+  font-size: 60px;
+  animation: bounce 1.5s infinite;
+}
+
+@keyframes bounce {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+</style>
+</head>
+
+<body>
+<!-- MUSIC -->
+<audio id="bgMusic" loop>
+  <source src="audio/pal.mp3" type="audio/mpeg">
+</audio>
+
+<!-- VOICE RECORDING -->
+<audio id="voiceRecording">
+  <source src="audio/recording_1.m4a" type="audio/mp4">
+</audio>
+
+<!-- HEARTS -->
+<script>
+for(let i=0;i<20;i++){
+  let heart=document.createElement("div");
+  heart.innerHTML="💖";
+  heart.className="heart";
+  heart.style.left=Math.random()*100+"%";
+  heart.style.animationDuration=3+Math.random()*5+"s";
+  document.body.appendChild(heart);
+}
+</script>
+
+<!-- SCENES -->
+
+<div id="scene1" class="scene active">
+  <h2>POV: She's about to see the cutest magical surprise</h2>
+  <h1 class="glow">Hey Myra 💖</h1>
+  <button id="startBtn" class="btn">Scan My Surprise</button>
+</div>
+
+<div id="scene2" class="scene">
+  <div class="loader"></div>
+  <h3 id="scanText">Detecting sweetness...</h3>
+</div>
+
+<div id="scene3" class="scene">
+  <h2 class="glow">Myra - Verified</h2>
+  <p>Location: Someone's heart ❤️</p>
+  <p>Magic level: Extremely High ✨</p>
+  <button class="btn">See what I love about you</button>
+</div>
+
+<div id="scene4" class="scene">
+  <div class="cards">
+    <div class="card">
+      <img src="images/pic1.jpg" alt="Pic 1">
+      <p>🐻 Your hugs make everything better</p>
+    </div>
+    <div class="card">
+      <img src="images/pic2.jpg" alt="Pic 2">
+      <p>☀️ You make me smile every day</p>
+    </div>
+    <div class="card">
+      <img src="images/pic3.jpg" alt="Pic 3">
+      <p>🎵 Your voice is my favorite song</p>
+    </div>
+    <div class="card">
+      <img src="images/pic4.jpg" alt="Pic 4">
+      <p>🌸 You are pure magic</p>
+    </div>
+  </div>
+</div>
+
+<div id="scene5" class="scene">
+  <h1 class="glow">🎂 Happy Birthday Myra 🎂</h1>
+</div>
+
+<div id="scene6" class="scene">
+  <div class="gift">🎁</div>
+  <p>
+    Happy Birthday Myra ❤️<br>
+    You are the most special person in my life...<br>
+    – From Virat
+  </p>
+  <button class="btn">Build Your Own Surprise</button>
+</div>
+
+<script>
+const scenes = document.querySelectorAll(".scene");
+
+function showScene(i){
+  scenes.forEach(s=>s.classList.remove("active"));
+  scenes[i].classList.add("active");
+}
+
+let texts = [
+  "Detecting sweetness...",
+  "Measuring loyalty...",
+  "Analyzing cuteness..."
+];
+
+let index = 0;
+
+setInterval(()=>{
+  document.getElementById("scanText").innerText = texts[index % texts.length];
+  index++;
+},2000);
+
+/* Timeline function */
+function startSurprise() {
+  const music = document.getElementById('bgMusic');
+  const voice = document.getElementById('voiceRecording');
+  music.play().catch(e => console.log("Music play failed:", e));
+
+  // Show loading scene immediately
+  showScene(1);
+
+  // Continue the timeline
+  setTimeout(()=>showScene(2), 6000);  // Show "Verified"
+  setTimeout(()=>showScene(3), 11000); // Show "What I love"
+  setTimeout(()=>showScene(4), 25000); // Show "Happy Birthday"
+  
+  // Play voice message after Happy Birthday scene starts
+  setTimeout(() => {
+    // Optional: Lower background music volume slightly to hear voice better
+    music.volume = 0.3;
+    voice.play().catch(e => console.log("Voice play failed:", e));
+  }, 26000); 
+
+  // Reset music volume after voice ends (approximate duration, or listen for 'ended')
+  voice.onended = () => {
+    music.volume = 1.0;
+  };
+
+  setTimeout(()=>showScene(5), 45000); // Show final gift (increased delay to let voice finish)
+}
+
+document.getElementById('startBtn').addEventListener('click', startSurprise);
+
+/* Confetti */
+for(let i=0;i<40;i++){
+  let c=document.createElement("div");
+  c.className="confetti";
+  c.style.left=Math.random()*100+"%";
+  c.style.animationDuration=2+Math.random()*3+"s";
+  document.body.appendChild(c);
+}
+</script>
+
+</body>
+</html>
