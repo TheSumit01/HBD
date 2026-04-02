@@ -89,34 +89,63 @@ body {
   to { transform: rotate(360deg); }
 }
 
-/* Cards */
-.cards {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
-  max-width: 500px;
-  width: 90%;
+/* Scattered Photo Styles */
+.photo-wall {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.card {
-  background: rgba(255,255,255,0.1);
-  padding: 12px;
-  border-radius: 15px;
-  backdrop-filter: blur(10px);
-  animation: slideUp 1s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.photo-card {
+  position: absolute;
+  width: 220px; /* Increased size */
+  background: white;
+  padding: 10px 10px 30px 10px; /* Polaroid style */
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  border-radius: 4px;
+  opacity: 0;
+  transform: translateX(-100vw) rotate(-20deg); /* Start far left */
+  transition: all 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 10;
+}
+
+.photo-card img {
+  width: 100%;
+  height: 180px; /* Increased height */
+  object-fit: cover;
+  border-radius: 2px;
+}
+
+.photo-card p {
+  color: #333;
+  font-family: 'Poppins', sans-serif; /* Simplified font */
+  font-weight: 500;
+  font-size: 15px;
+  margin-top: 10px;
   text-align: center;
 }
 
-.card img {
-  width: 100%;
-  height: auto;
-  max-height: 150px;
-  object-fit: contain;
-  border-radius: 10px;
-  margin-bottom: 8px;
+.photo-card.stuck {
+  opacity: 1;
+}
+
+/* Adjusted positions for larger cards */
+.photo-card:nth-child(1).stuck { transform: translate(-110px, -160px) rotate(-8deg); }
+.photo-card:nth-child(2).stuck { transform: translate(110px, -100px) rotate(8deg); }
+.photo-card:nth-child(3).stuck { transform: translate(-90px, 100px) rotate(5deg); }
+.photo-card:nth-child(4).stuck { transform: translate(100px, 160px) rotate(-6deg); }
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .photo-card { width: 160px; }
+  .photo-card img { height: 130px; }
+  .photo-card:nth-child(1).stuck { transform: translate(-70px, -130px) rotate(-8deg); }
+  .photo-card:nth-child(2).stuck { transform: translate(70px, -70px) rotate(8deg); }
+  .photo-card:nth-child(3).stuck { transform: translate(-50px, 80px) rotate(5deg); }
+  .photo-card:nth-child(4).stuck { transform: translate(60px, 130px) rotate(-6deg); }
 }
 
 @keyframes slideUp {
@@ -149,7 +178,101 @@ body {
   50% { transform: translateY(-15px); }
 }
 
+/* Envelope Styles */
+.envelope-wrapper {
+  position: relative;
+  width: 280px;
+  height: 180px;
+  background: #f1f1f1;
+  margin: 20px auto;
+  cursor: pointer;
+  transition: 0.5s;
+  perspective: 1000px;
+  border-radius: 0 0 10px 10px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  overflow: visible; /* Changed from hidden to visible to let letter pop out */
+}
+
+.envelope-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #e0e0e0;
+  clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
+  z-index: 3; /* Above the letter */
+  border-radius: 0 0 10px 10px;
+}
+
+.envelope-flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #ff4fd8;
+  clip-path: polygon(0 0, 100% 0, 50% 50%);
+  transform-origin: top;
+  transition: 0.4s ease-in-out;
+  z-index: 4; /* Top layer when closed */
+  border-radius: 10px 10px 0 0;
+}
+
+.envelope-wrapper.open .envelope-flap {
+  transform: rotateX(180deg);
+  z-index: 1; /* Move behind when opened */
+}
+
+.letter {
+  position: absolute;
+  top: 0; /* Start exactly at the top */
+  left: 5%;
+  width: 90%;
+  height: 90%;
+  background: white;
+  color: #333;
+  padding: 20px;
+  border-radius: 5px;
+  transition: 0.6s ease-in-out;
+  z-index: 2; /* Behind the front flap and before-element */
+  font-family: 'Dancing Script', cursive;
+  text-align: left;
+  overflow-y: auto;
+  font-size: 16px;
+  line-height: 1.6;
+  opacity: 0; /* Hide initially */
+  visibility: hidden;
+}
+
+.envelope-wrapper.open .letter {
+  transform: translateY(-180px); /* Pop out high */
+  height: 480px;
+  width: 100%;
+  left: 0;
+  z-index: 5; /* Bring to very front */
+  box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+  padding: 30px;
+  opacity: 1;
+  visibility: visible;
+}
+
+.heart-seal {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 4;
+  font-size: 24px;
+  transition: 0.3s;
+}
+
+.envelope-wrapper.open .heart-seal {
+  opacity: 0;
+}
 </style>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -178,8 +301,8 @@ for(let i=0;i<20;i++){
 <!-- SCENES -->
 
 <div id="scene1" class="scene active">
-  <h2>POV: She's about to see the cutest magical surprise</h2>
-  <h1 class="glow">Hey Myra 💖</h1>
+  <h2>POV: He's about to see the cutest magical surprise</h2>
+  <h1 class="glow">Hey Udit 💖</h1>
   <button id="startBtn" class="btn">Scan My Surprise</button>
 </div>
 
@@ -189,45 +312,63 @@ for(let i=0;i<20;i++){
 </div>
 
 <div id="scene3" class="scene">
-  <h2 class="glow">Myra - Verified</h2>
+  <h2 class="glow">Udit - Verified</h2>
   <p>Location: Someone's heart ❤️</p>
-  <p>Magic level: Extremely High ✨</p>
+  <p>Hand Pump Level: Extremely High ✨</p>
   <button class="btn">See what I love about you</button>
 </div>
 
 <div id="scene4" class="scene">
-  <div class="cards">
-    <div class="card">
-      <img src="images/pic1.jpg" alt="Pic 1">
-      <p>🐻 Your hugs make everything better</p>
+  <div class="photo-wall">
+    <div class="photo-card">
+      <img src="images/pic1.jpg" alt="Memory 1">
+      <p>Your warm hugs 🐻</p>
     </div>
-    <div class="card">
-      <img src="images/pic2.jpg" alt="Pic 2">
-      <p>☀️ You make me smile every day</p>
+    <div class="photo-card">
+      <img src="images/pic2.jpg" alt="Memory 2">
+      <p>That beautiful smile ☀️</p>
     </div>
-    <div class="card">
-      <img src="images/pic3.jpg" alt="Pic 3">
-      <p>🎵 Your voice is my favorite song</p>
+    <div class="photo-card">
+      <img src="images/pic3.jpg" alt="Memory 3">
+      <p>Your Mendak Jaisi Harkat 🎵</p>
     </div>
-    <div class="card">
-      <img src="images/pic4.jpg" alt="Pic 4">
-      <p>🌸 You are pure magic</p>
+    <div class="photo-card">
+      <img src="images/pic4.jpg" alt="Memory 4">
+      <p>Completely YOU 🌸</p>
     </div>
   </div>
 </div>
 
 <div id="scene5" class="scene">
-  <h1 class="glow">🎂 Happy Birthday Myra 🎂</h1>
+  <h1 class="glow">🎂 Happy Birthday Udit 🎂</h1>
 </div>
 
 <div id="scene6" class="scene">
-  <div class="gift">🎁</div>
-  <p>
-    Happy Birthday Myra ❤️<br>
-    You are the most special person in my life...<br>
-    – From Virat
-  </p>
-  <button class="btn">Build Your Own Surprise</button>
+  <div class="envelope-wrapper" id="envelope">
+    <div class="envelope-flap"></div>
+    <div class="letter">
+      <h3 style="margin-bottom: 10px; color: #ff4fd8;">To Udit ❤️</h3>
+      <p style="font-size: 16px; line-height: 1.5;">
+        Happy Birthday, Gunda ❤️
+
+Today is all about you and honestly, I just feel lucky that I get to call you my person 😋.
+You make my life brighter, calmer, and a lot more fun than it used to be. With you, even the normal days feel special… and that’s something I’ll always be grateful for.😭🫶🏻
+I want you to grow, chase your goals, and still be the person who makes me smile in the middle of everything. I’m genuinely so proud of who you are and eagerly waiting to see who you turn into. 🥹
+
+
+Yes, we fight, we argue, we have our moments… but at the end of it all, it’s always us. And I wouldn’t have it any other way ❤️
+
+I hope this year brings you success, happiness, peace, and everything you’ve been working & hoping for and I hope I get to be right there with you through all of it ✨
+
+Stay the same, stay amazing… and maybe fight a little less with me? 😌
+
+I love you, bacha 🫂Happy Birthday
+Sending sumo to ur address and pls cut the cake just the way u wanted Me to cut 😎
+      </p>
+    </div>
+    <div class="heart-seal">💖</div>
+  </div>
+  <p id="envelope-instruction" style="margin-top: 120px; font-weight: 500; transition: 0.3s;">Click on envelope to open</p>
 </div>
 
 <script>
@@ -262,7 +403,17 @@ function startSurprise() {
 
   // Continue the timeline
   setTimeout(()=>showScene(2), 6000);  // Show "Verified"
-  setTimeout(()=>showScene(3), 11000); // Show "What I love"
+  setTimeout(()=> {
+    showScene(3);
+    // Animate scattered photos one by one
+    const photos = document.querySelectorAll('.photo-card');
+    photos.forEach((photo, i) => {
+      setTimeout(() => {
+        photo.classList.add('stuck');
+      }, i * 1500); // Appear every 1.5 seconds
+    });
+  }, 11000); // Show "Memories of Us"
+  
   setTimeout(()=>showScene(4), 25000); // Show "Happy Birthday"
   
   // Play voice message after Happy Birthday scene starts
@@ -281,6 +432,17 @@ function startSurprise() {
 }
 
 document.getElementById('startBtn').addEventListener('click', startSurprise);
+
+// Envelope logic
+document.getElementById('envelope').addEventListener('click', function() {
+  this.classList.toggle('open');
+  const instruction = document.getElementById('envelope-instruction');
+  if (this.classList.contains('open')) {
+    instruction.style.opacity = '0';
+  } else {
+    instruction.style.opacity = '1';
+  }
+});
 
 /* Confetti */
 for(let i=0;i<40;i++){
